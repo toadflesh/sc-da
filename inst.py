@@ -150,164 +150,131 @@ def match_inst(data: list[str], inst: str, idx: int, offset: int, wf):
         case "60":
             mvmt: int = (BYTE * 1) + 1
             name = "PUSH1"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "61":
             mvmt: int = (BYTE * 2) + 1
             name = "PUSH2"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "62":
             mvmt: int = (BYTE * 3) + 1
             name = "PUSH3"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "63":
             mvmt: int = (BYTE * 4) + 1
             name = "PUSH4"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "64":
             mvmt: int = (BYTE * 5) + 1
             name = "PUSH5"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "65":
             mvmt: int = (BYTE * 6) + 1
             name = "PUSH6"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "66":
             mvmt: int = (BYTE * 7) + 1
             name = "PUSH7"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "67":
             mvmt: int = (BYTE * 8) + 1
             name = "PUSH8"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "68":
             mvmt: int = (BYTE * 9) + 1
             name = "PUSH9"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "69":
             mvmt: int = (BYTE * 10) + 1
             name = "PUSH10"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "6a":
             mvmt: int = (BYTE * 11) + 1
             name = "PUSH11"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "6b":
             mvmt: int = (BYTE * 12) + 1
             name = "PUSH12"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "6c":
             mvmt: int = (BYTE * 13) + 1
             name = "PUSH13"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "6d":
             mvmt: int = (BYTE * 14) + 1
             name = "PUSH14"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "6e":
             mvmt: int = (BYTE * 15) + 1
             name = "PUSH15"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "6f":
             mvmt: int = (BYTE * 16) + 1
             name = "PUSH16"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "70":
             mvmt: int = (BYTE * 17) + 1
             name = "PUSH17"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "71":
             mvmt: int = (BYTE * 18) + 1
             name = "PUSH18"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "72":
             mvmt: int = (BYTE * 19) + 1
             name = "PUSH19"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "73":
             mvmt: int = (BYTE * 20) + 1
             name = "PUSH20"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "74":
             mvmt: int = (BYTE * 21) + 1
             name = "PUSH21"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "75":
             mvmt: int = (BYTE * 22) + 1
             name = "PUSH22"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "76":
             mvmt: int = (BYTE * 23) + 1
             name = "PUSH23"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "77":
             mvmt: int = (BYTE * 24) + 1
             name = "PUSH24"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "78":
             mvmt: int = (BYTE * 25) + 1
             name = "PUSH25"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "79":
             mvmt: int = (BYTE * 26) + 1
             name = "PUSH26"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "7a":
             mvmt: int = (BYTE * 27) + 1
             name = "PUSH27"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "7b":
             mvmt: int = (BYTE * 28) + 1
             name = "PUSH28"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "7c":
             mvmt: int = (BYTE * 29) + 1
             name = "PUSH29"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "7d":
             mvmt: int = (BYTE * 30) + 1
             name = "PUSH30"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "7e":
             mvmt: int = (BYTE * 31) + 1
             name = "PUSH31"
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "7f":
             mvmt: int = (BYTE * 32) + 1
             name = "PUSH32"
-            
-            for i in range(mvmt-1):
-                pushed_data = pushed_data + data[offset+1+i]
+            pushed_data = push_bytes(data, mvmt, offset)
         case "80":
             name = "DUP1"
         case "81":
@@ -408,9 +375,12 @@ def match_inst(data: list[str], inst: str, idx: int, offset: int, wf):
     print_instruction(inst, idx, name, wf, len(data), offset, pushed_data)
     return mvmt
 
-def process_instruction(inst: str, idx: int, offset: int, wf):
-    name: str
-    
+def push_bytes(data: list[str], mvmt: int, offset: int):
+    pushed_data: str = ""
+    for i in range(mvmt-1):
+        pushed_data = pushed_data + data[offset+BYTE+i]
+    return pushed_data
+     
 
 def print_instruction(inst: str, idx: int, name: str, wf, len: int, offset: int, pushed_data=""):
     space_factor = 15

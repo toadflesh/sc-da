@@ -126,6 +126,5 @@ def main():
     
     disassemble(network, contract_address)
 
-
 if __name__ == "__main__":
     main()
