@@ -1,37 +1,61 @@
 import os
 import sys
 import requests
+import json
 from dotenv import load_dotenv
 from inst import match_inst
 
-load_dotenv()
-ALCHEMY_API_KEY = os.getenv('ALCHEMY_API_KEY')
-ALCHEMY_ARB_URL = os.getenv('ALCHEMY_ARB_URL')
-ALCHEMY_ETH_URL = os.getenv('ALCHEMY_ETH_URL')
-ALCHEMY_SOL_URL = os.getenv('ALCHEMY_SOL_URL')
 
-def assemble_url(network: str):
+def load_urls_and_keys():
+    load_dotenv()
+
+    ALCHEMY_API_KEY = os.getenv('ALCHEMY_API_KEY')
+    ALCHEMY_ARB_URL = os.getenv('ALCHEMY_ARB_URL')
+    ALCHEMY_ETH_URL = os.getenv('ALCHEMY_ETH_URL')
+    ALCHEMY_SOL_URL = os.getenv('ALCHEMY_SOL_URL')
+    FOUR_BYTE_HEX_SIGNATURE_URL = os.getenv('FOUR_BYTE_HEX_SIGNATURE_URL')
+    return {
+        "alchemy": {
+            "api_key": ALCHEMY_API_KEY,
+            "urls": {
+                "arb": ALCHEMY_ARB_URL,
+                "eth": ALCHEMY_ETH_URL,
+                "sol": ALCHEMY_SOL_URL
+            }
+        },
+        "four_byte": {
+            "urls": {
+                "hex_sig": FOUR_BYTE_HEX_SIGNATURE_URL
+            }
+        }
+    }
+
+def assemble_url(network: str, cfg: dict):
     url: str = ""
+    alchemy_api_key = cfg['alchemy']['api_key']
+    alchemy_eth_rpc_url = cfg['alchemy']['urls']['eth']
+    alchemy_arb_rpc_url = cfg['alchemy']['urls']['arb']
+    alchemy_sol_rpc_url = cfg['alchemy']['urls']['sol']
+
     match network:
         case 'eth': 
-            if ALCHEMY_API_KEY != None and ALCHEMY_ETH_URL != None:
-                url = ALCHEMY_ETH_URL+ALCHEMY_API_KEY
+            if alchemy_api_key != None and alchemy_eth_rpc_url != None:
+                url = alchemy_eth_rpc_url+alchemy_api_key
         case 'arb':
-            if ALCHEMY_API_KEY != None and ALCHEMY_ARB_URL != None:
-                url = ALCHEMY_ARB_URL+ALCHEMY_API_KEY
+            if alchemy_api_key != None and alchemy_arb_rpc_url != None:
+                url = alchemy_arb_rpc_url+alchemy_api_key
         case 'sol':
-            if ALCHEMY_API_KEY != None and ALCHEMY_SOL_URL != None:
-                url = ALCHEMY_SOL_URL+ALCHEMY_API_KEY
+            if alchemy_api_key != None and alchemy_sol_rpc_url != None:
+                url = alchemy_sol_rpc_url+alchemy_api_key
         case _:
-            return url
+            url = ""
     return url
 
-def snag_data(network: str, contract_address: str):
-    url: str = assemble_url(network) 
+def snag_data(network: str, contract_address: str, cfg: dict):
+    url: str = assemble_url(network, cfg) 
     if url == "":
         print("NO URL RETURNED - EXITING...")
         sys.exit(1)
-    
 
     payload = {
         "id": 1,
@@ -63,7 +87,6 @@ def snag_data(network: str, contract_address: str):
         print(f"Network/request error: {e}", file=sys.stderr)
         sys.exit(1)
 
-
         d_str: str = data[2:].decode('utf-8')
         d_lst = []
         while offset+2 < len(data):
@@ -85,23 +108,51 @@ def code_to_list(data: str):
         offset+=2
     return d_lst
 
-def disassemble(network: str, contract_address: str):
-    r_data = snag_data(network, contract_address)
+def disassemble(network: str, contract_address: str, cfg: dict):
+    r_data = snag_data(network, contract_address, cfg)
     data = code_to_list(r_data)
 
-    with open('dis.txt', 'w') as wf:
-        wf.write('disassembly for -> '+contract_address+'\n')
+    with open(f'da_{contract_address}.txt', 'w') as daf:
+        daf.write('disassembly for -> '+contract_address+'\n')
 
         instruction_idx = 0
         offset = 0
-        with open('logs.txt', 'w') as lf:
-            while offset < len(data):
-                lf.write(f'[INSTRUCTION : {instruction_idx:06}] -> data[{offset:06d}] : {data[offset]}\n')    
-                inst: str = data[offset]
-                print(f'data[{offset}] -> {inst}')
-                movement: int = match_inst(data, inst, instruction_idx, offset, wf)
-                offset+=movement
-                instruction_idx+=1
+        stack = []
+        memory = []
+        storage = []
+        four_byte = []
+
+        dynamo = {
+            "stack": stack,
+            "memory": memory,
+            "storage":storage,
+            "four_byte": four_byte
+            }
+
+        with open(f'four_byte_{contract_address}.txt', 'w') as fbf:
+            with open(f'logs_{contract_address}.txt', 'w') as lf:
+                while offset < len(data):
+                    lf.write(f'[INSTRUCTION : {instruction_idx:06}] -> data[{offset:06d}] : {data[offset]}\n')    
+                    inst: str = data[offset]
+                    print(f'data[{offset}] -> {inst}')
+                    movement: int = match_inst(data, inst, instruction_idx, offset, daf, fbf, cfg, dynamo)
+                    offset+=movement
+                    instruction_idx+=1
+        print()
+        print('PUSH INSTRUCTIONS:')
+        for idx, item in enumerate(dynamo['stack']):
+            if len(item['instruction']) > 5:
+                print(f'[{idx:06d}] -> {item['instruction']} -> 0x{int(item['data'], 16):064x}')
+            else:
+                print(f'[{idx:06d}] -> {item['instruction']}  -> 0x{int(item['data'], 16):064x}')
+        print()
+        print('FOUR_BYTE SIGS:')
+        for idx, item in enumerate(dynamo['four_byte']):
+            if len(item['instruction']) > 5:
+                print(f'[{idx:06d}] -> {item['instruction']} -> 0x{item['hex_signature']}')
+            else:
+                print(f'[{idx:06d}] -> {item['instruction']}  -> 0x{item['hex_signature']}')
+        
 
 def print_invalid_arg_msg(msg: str):
     print(msg)
@@ -124,7 +175,8 @@ def main():
         print_invalid_arg_msg(f"invalid contract address entered -> {contract_address}")
         sys.exit(1)
     
-    disassemble(network, contract_address)
+    cfg: dict = load_urls_and_keys()
+    disassemble(network, contract_address, cfg)
 
 if __name__ == "__main__":
     main()

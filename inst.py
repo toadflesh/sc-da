@@ -1,5 +1,7 @@
+from four_byte import four_byte_hex_sig
+
 BYTE: int = 1
-def match_inst(data: list[str], inst: str, idx: int, offset: int, wf):
+def match_inst(data: list[str], inst: str, idx: int, offset: int, daf, fbf, cfg: dict, dynamo: dict):
     mvmt: int = BYTE
     name: str = ""
     pushed_data: str = ""
@@ -147,134 +149,186 @@ def match_inst(data: list[str], inst: str, idx: int, offset: int, wf):
         case "5f":
             name = "PUSH0"
             pushed_data = "00"
+            dynamo['stack'].append({"instruction": name, "data":pushed_data})
         case "60":
             mvmt: int = (BYTE * 1) + 1
             name = "PUSH1"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction": name, "data":pushed_data})
         case "61":
             mvmt: int = (BYTE * 2) + 1
             name = "PUSH2"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "62":
             mvmt: int = (BYTE * 3) + 1
             name = "PUSH3"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "63":
             mvmt: int = (BYTE * 4) + 1
             name = "PUSH4"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
+
+            isDuplicate: bool = False
+            for sig in dynamo['four_byte']:
+                if pushed_data == sig['hex_signature']:
+                    isDuplicate = True
+                    break
+            if isDuplicate == False:
+                four_byte_hex_sig(pushed_data, fbf, cfg)
+                dynamo['four_byte'].append({"instruction": name, "hex_signature": pushed_data})
         case "64":
             mvmt: int = (BYTE * 5) + 1
             name = "PUSH5"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "65":
             mvmt: int = (BYTE * 6) + 1
             name = "PUSH6"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "66":
             mvmt: int = (BYTE * 7) + 1
             name = "PUSH7"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "67":
             mvmt: int = (BYTE * 8) + 1
             name = "PUSH8"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "68":
             mvmt: int = (BYTE * 9) + 1
             name = "PUSH9"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "69":
             mvmt: int = (BYTE * 10) + 1
             name = "PUSH10"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "6a":
             mvmt: int = (BYTE * 11) + 1
             name = "PUSH11"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "6b":
             mvmt: int = (BYTE * 12) + 1
             name = "PUSH12"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "6c":
             mvmt: int = (BYTE * 13) + 1
             name = "PUSH13"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "6d":
             mvmt: int = (BYTE * 14) + 1
             name = "PUSH14"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "6e":
             mvmt: int = (BYTE * 15) + 1
             name = "PUSH15"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "6f":
             mvmt: int = (BYTE * 16) + 1
             name = "PUSH16"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "70":
             mvmt: int = (BYTE * 17) + 1
             name = "PUSH17"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "71":
             mvmt: int = (BYTE * 18) + 1
             name = "PUSH18"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "72":
             mvmt: int = (BYTE * 19) + 1
             name = "PUSH19"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "73":
             mvmt: int = (BYTE * 20) + 1
             name = "PUSH20"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "74":
             mvmt: int = (BYTE * 21) + 1
             name = "PUSH21"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "75":
             mvmt: int = (BYTE * 22) + 1
             name = "PUSH22"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "76":
             mvmt: int = (BYTE * 23) + 1
             name = "PUSH23"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "77":
             mvmt: int = (BYTE * 24) + 1
             name = "PUSH24"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "78":
             mvmt: int = (BYTE * 25) + 1
             name = "PUSH25"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "79":
             mvmt: int = (BYTE * 26) + 1
             name = "PUSH26"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "7a":
             mvmt: int = (BYTE * 27) + 1
             name = "PUSH27"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "7b":
             mvmt: int = (BYTE * 28) + 1
             name = "PUSH28"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "7c":
             mvmt: int = (BYTE * 29) + 1
             name = "PUSH29"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "7d":
             mvmt: int = (BYTE * 30) + 1
             name = "PUSH30"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "7e":
             mvmt: int = (BYTE * 31) + 1
             name = "PUSH31"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
         case "7f":
             mvmt: int = (BYTE * 32) + 1
             name = "PUSH32"
             pushed_data = push_bytes(data, mvmt, offset)
+            dynamo['stack'].append({"instruction":name, "data":pushed_data})
+            # fbf.write(f'PUSH32-FOUR_BYTE {pushed_data}\n')
+            if pushed_data[8:] == '00000000000000000000000000000000000000000000000000000000':
+                isDuplicate: bool = False
+                for sig in dynamo['four_byte']:
+                    if pushed_data[:8] == sig['hex_signature']:
+                        isDuplicate = True
+                        break
+                if isDuplicate == False:
+                    four_byte_hex_sig(pushed_data[:8], fbf, cfg)
+                    dynamo['four_byte'].append({"instruction": name, "hex_signature": pushed_data[:8]})
         case "80":
             name = "DUP1"
         case "81":
@@ -372,7 +426,7 @@ def match_inst(data: list[str], inst: str, idx: int, offset: int, wf):
         case _:
             name: str = f"'{inst}'(Unknown Opcode)"
 
-    print_instruction(inst, idx, name, wf, len(data), offset, pushed_data)
+    print_instruction(inst, idx, name, daf, len(data), offset, pushed_data)
     return mvmt
 
 def push_bytes(data: list[str], mvmt: int, offset: int):
@@ -382,25 +436,29 @@ def push_bytes(data: list[str], mvmt: int, offset: int):
     return pushed_data
      
 
-def print_instruction(inst: str, idx: int, name: str, wf, len: int, offset: int, pushed_data=""):
+def print_instruction(inst: str, idx: int, name: str, daf, len: int, offset: int, pushed_data=""):
     space_factor = 15
 
     # MORE VERBOSE
     # if pushed_data == "":
     #     msg: str = f'[ INSTRUCTION : {idx:06} - {name}{' '*(space_factor - len(name))}] -> {inst}'
-    #     wf.write(msg+'\n')
+    #     daf.write(msg+'\n')
     # else:
     #     msg: str = f'[ INSTRUCTION : {idx:06} - {name}{' '*(space_factor - len(name))}] -> {inst} -> {name} -> {pushed_data}'
-    #     wf.write(msg+'\n')
+    #     daf.write(msg+'\n')
 
     # LESS VERBOSE (LIKE ETHERSCAN)
     if offset+1 == len:
         if pushed_data != "":
-            wf.write(f'{name} 0x{pushed_data}')
+            daf.write(f'{name} 0x{pushed_data}')
+            # print(FOUR_BYTE_HEX_SIGNATURE_URL)
         else:
-            wf.write(f'{name}')
+            daf.write(f'{name}')
+            # print(FOUR_BYTE_HEX_SIGNATURE_URL)
     else:
         if pushed_data != "":
-            wf.write(f'{name} 0x{pushed_data}\n')
+            daf.write(f'{name} 0x{pushed_data}\n')
+            # print(FOUR_BYTE_HEX_SIGNATURE_URL)
         else:
-            wf.write(f'{name}\n')
+            daf.write(f'{name}\n')
+            # print(FOUR_BYTE_HEX_SIGNATURE_URL)
